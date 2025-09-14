@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: llm-callcenter-app
+    ports:
+      - "${PORT:-8000}:${PORT:-8000}"
+    environment:
+      - APP_NAME=${APP_NAME:-LLM Call Center Agent}
+      - APP_VERSION=${APP_VERSION:-0.1.0}
+      - DEBUG=${DEBUG:-false}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - HOST=${HOST:-0.0.0.0}
+      - PORT=${PORT:-8000}
+      - WORKERS=${WORKERS:-1}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4-1106-preview}
+      - OPENAI_MAX_TOKENS=${OPENAI_MAX_TOKENS:-1000}
+      - OPENAI_TEMPERATURE=${OPENAI_TEMPERATURE:-0.7}
+      - OPENAI_TIMEOUT=${OPENAI_TIMEOUT:-30}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT:-8000}/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - app_logs:/app/logs
+
+volumes:
+  app_logs:
