@@ -87,7 +87,7 @@ graph TD
 
 1. **Клонирование проекта:**
 ```bash
-git clone <repository-url>
+git clone https://github.com/softkisik228/LLM-Callcenter-Agent.git
 cd llm-callcenter-agent
 ```
 
